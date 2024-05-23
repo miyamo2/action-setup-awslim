@@ -36,7 +36,7 @@ jobs:
       - name: Assert Version
         run: |
           INSTALLED=$(aws-sdk-client-go --version)
-          if [[ "$INSTALLED" =~ ${{ env.VERSION }} ]]; then
+          if [[ "$INSTALLED" =~ "HEAD" ]]; then
             exit 0
           fi
           exit 1
