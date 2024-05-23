@@ -100,5 +100,11 @@ jobs:
         uses: ./
 
       - name: Assert Installation
+        if: ${{ matrix.os != 'windows-latest' }}
         run: type aws-sdk-client-go
+
+      - name: Assert Installation
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: type aws-sdk-client-go
+        shell: bash
 
