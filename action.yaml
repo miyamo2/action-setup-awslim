@@ -22,7 +22,7 @@ runs:
   steps:
     - name: Checkout with version
       uses: actions/checkout@v4
-      if: ${{ inputs.version }}
+      if: ${{ inputs.version != 'latest'}}
       with:
         repository: fujiwara/aws-sdk-client-go
         path: fujiwara/aws-sdk-client-go
@@ -30,14 +30,14 @@ runs:
 
     - name: Checkout
       uses: actions/checkout@v4
-      if: ${{ !inputs.version }}
+      if: ${{ inputs.version != 'latest'}}
       with:
         repository: fujiwara/aws-sdk-client-go
         path: fujiwara/aws-sdk-client-go
         fetch-depth: 0
 
     - name: Checkout latest version
-      if: ${{ !inputs.version }}
+      if: ${{ inputs.version != 'latest'}}
       run: |
         TAG=$(git describe --tags --abbrev=0)
         git checkout $TAG
