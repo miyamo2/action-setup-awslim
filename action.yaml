@@ -17,6 +17,8 @@ inputs:
       It is set as the environment variable `AWS_SDK_CLIENT_GO_GEN`. 
       See: https://github.com/fujiwara/aws-sdk-client-go?tab=readme-ov-file#aws_sdk_client_go_gen-environment-variable
     required: false
+permissions:
+  contents: read|write
 runs:
   using: "composite"
   steps:
