@@ -20,19 +20,11 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Find Go
-      id: find-go
-      run: |
-        type go > /dev/null 2>&1 && echo "find=true" >> $GITHUB_OUTPUT
-      shell: /bin/bash {0}
-
     - name: Setup Go
       uses: actions/setup-go@v5
       with:
         go-version: ">=1.21.0"
-        cache: true
-        cache-dependency-path: go.sum
-      if: ${{ steps.find-go.outputs.find != 'true'}}
+      if: ${{ runner.os == 'macOS'}}
 
     - name: Checkout with version
       uses: actions/checkout@v4
