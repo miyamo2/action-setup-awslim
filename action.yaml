@@ -24,7 +24,7 @@ runs:
       id: find-go
       run: |
         type go > /dev/null 2>&1 && echo "find=true" >> $GITHUB_OUTPUT
-      shell: /bin/bash --noprofile --norc -o pipefail {0}
+      shell: /bin/bash {0}
 
     - name: Setup Go
       uses: actions/setup-go@v5
