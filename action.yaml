@@ -34,11 +34,11 @@ runs:
       with:
         repository: fujiwara/aws-sdk-client-go
         path: fujiwara/aws-sdk-client-go
+        fetch-depth: 0
 
     - name: Checkout latest version
       if: ${{ !inputs.version }}
       run: |
-        git pull --tags
         TAG=$(git describe --tags --abbrev=0)
         git checkout $TAG
       shell: bash
