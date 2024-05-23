@@ -31,7 +31,7 @@ runs:
         go-version: ">=1.21.0"
         cache: true
         cache-dependency-path: go.sum
-      if: failure() && steps.find-go.outputs.status == 'failure'
+      if: failure() && steps.find-go.outcome == 'failure'
 
     - name: Checkout with version
       uses: actions/checkout@v4
