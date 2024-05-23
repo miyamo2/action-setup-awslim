@@ -1,0 +1,68 @@
+name: "action-setup-aws-sdk-client-go"
+description: "Setup `fujiwara/aws-sdk-client-go`"
+inputs:
+  version:
+    description: |
+      aws-sdk-client-gen version specification.
+      format: `vX.Y.Z` or `latest`
+    required: false
+    default: "latest"
+  gen-yaml:
+    description: |
+      Relative path to gen.yaml from the repository root. 
+      See: https://github.com/fujiwara/aws-sdk-client-go?tab=readme-ov-file#genyaml-configuration-file
+    required: false
+  client-go-gen:
+    description: |
+      It is set as the environment variable `AWS_SDK_CLIENT_GO_GEN`. 
+      See: https://github.com/fujiwara/aws-sdk-client-go?tab=readme-ov-file#aws_sdk_client_go_gen-environment-variable
+    required: false
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout with version
+      uses: actions/checkout@v4
+      if: ${{ inputs.version }}
+      with:
+        repository: fujiwara/aws-sdk-client-go
+        path: fujiwara/aws-sdk-client-go
+        ref: ${{ inputs.version }}
+
+    - name: Checkout
+      uses: actions/checkout@v4
+      if: ${{ !inputs.version }}
+      with:
+        repository: fujiwara/aws-sdk-client-go
+        path: fujiwara/aws-sdk-client-go
+
+    - name: Checkout latest version
+      uses: actions/checkout@v4
+      if: ${{ !inputs.version }}
+      run: |
+        git pull --tags
+        TAG=$(git describe --tags --abbrev=0)
+        git checkout $TAG
+      shell: bash
+      working-directory: fujiwara/aws-sdk-client-go
+
+    - name: Set AWS_SDK_CLIENT_GO_GEN
+      run: export AWS_SDK_CLIENT_GO_GEN=${{ inputs.client-go-gen }}
+      shell: bash
+      if: ${{ inputs.client-go-gen }}
+
+    - name: Copy gen.yml
+      run: cp ${{ inputs.gen-yaml }} ${{ github.workspace }}/fujiwara/aws-sdk-client-go/gen.yaml -f
+      shell: bash
+      if: ${{ inputs.gen-yaml }}
+
+    - name: Build and Intall
+      working-directory: fujiwara/aws-sdk-client-go
+      run: |
+        if ${{ steps.cache_dependency.outputs.cache-hit != 'true' }} || ${{ steps.cache_dependency.outputs.cache-hit != 'true' }}; then
+          go mod tidy
+        fi
+        go generate ./cmd/aws-sdk-client-gen .
+        cd ./cmd/aws-sdk-client-go
+        go install ./cmd/aws-sdk-client-go -installsuffix aws-sdk-client-go
+      shell: bash
+
