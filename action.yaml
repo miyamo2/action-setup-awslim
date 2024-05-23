@@ -57,9 +57,6 @@ runs:
     - name: Build and Intall
       working-directory: fujiwara/aws-sdk-client-go
       run: |
-        if ${{ steps.cache_dependency.outputs.cache-hit != 'true' }} || ${{ steps.cache_dependency.outputs.cache-hit != 'true' }}; then
-          go mod tidy
-        fi
         go generate ./cmd/aws-sdk-client-gen .
         cd ./cmd/aws-sdk-client-go
         go install ./cmd/aws-sdk-client-go -installsuffix aws-sdk-client-go
