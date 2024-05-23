@@ -17,8 +17,6 @@ inputs:
       It is set as the environment variable `AWS_SDK_CLIENT_GO_GEN`. 
       See: https://github.com/fujiwara/aws-sdk-client-go?tab=readme-ov-file#aws_sdk_client_go_gen-environment-variable
     required: false
-permissions:
-  contents: read|write
 runs:
   using: "composite"
   steps:
@@ -32,14 +30,14 @@ runs:
 
     - name: Checkout
       uses: actions/checkout@v4
-      if: ${{ inputs.version != 'latest'}}
+      if: ${{ inputs.version == 'latest'}}
       with:
         repository: fujiwara/aws-sdk-client-go
         path: fujiwara/aws-sdk-client-go
         fetch-depth: 0
 
     - name: Checkout latest version
-      if: ${{ inputs.version != 'latest'}}
+      if: ${{ inputs.version == 'latest'}}
       run: |
         TAG=$(git describe --tags --abbrev=0)
         git checkout $TAG
