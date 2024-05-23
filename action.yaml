@@ -22,7 +22,8 @@ runs:
   steps:
     - name: Find Go
       id: find-go
-      run: type go
+      run: |
+        echo "find=$(type go > /dev/null 2>&1)" >> $GITHUB_OUTPUT
       shell: bash
 
     - name: Setup Go
@@ -31,7 +32,7 @@ runs:
         go-version: ">=1.21.0"
         cache: true
         cache-dependency-path: go.sum
-      if: failure() && steps.find-go.outcome == 'failure'
+      if: ${{ steps.find-go.outputs.find == 'false'}}
 
     - name: Checkout with version
       uses: actions/checkout@v4
