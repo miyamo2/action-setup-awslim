@@ -1,0 +1,38 @@
+name: release
+
+on:
+  push:
+    branches: [main]
+    paths: ["CHANGELOG.md"]
+
+permissions: write-all
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract Version
+        id: versioning
+        run: |
+          VERSION="v$(sed -n 's/##\s\([0-9.]*\)\s.*/\1/p' CHANGELOG.md | head -1)"
+          echo ::set-output name=version::$VERSION
+
+      - name: Extract changes from prev version
+        run: |
+          git fetch --prune --unshallow
+          PRETAG=$(git describe --tags --abbrev=0)
+          CURRENTTAG=${{ steps.versioning.outputs.version }}
+          echo "## What's Changed in ${CURRENTTAG}" > diff-changelog.txt
+          git diff $PRETAG..${{ github.sha }} -- CHANGELOG.md | grep -E '^\+' | grep -v '+++' | sed -e 's/^\+//g' | sed -e 's/##\s[0-9.]*\s.*//g' | sed -e '/^$/d' >> diff-changelog.txt
+          echo "" >> diff-changelog.txt
+          echo "**Full Changelog**: https://github.com/miyamo2/action-setup-aws-sdk-client-go/compare/${PRETAG}...${CURRENTTAG}" >> diff-changelog.txt
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.versioning.outputs.version }}
+          generate_release_notes: false
+          body_path: diff-changelog.txt

@@ -1,0 +1,104 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - "feat/**"
+      - "refactor/**"
+      - "fix/**"
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+  workflow_call:
+
+permissions: write-all
+
+jobs:
+  test-with-version:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: "v0.0.1"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Action
+        uses: ./
+        with:
+          version: ${{ env.VERSION }}
+
+      - name: Assert Installation
+        run: type aws-sdk-client-go
+
+      - name: Assert Version
+        run: |
+          INSTALLED=$(aws-sdk-client-go --version)
+          if [[ "$INSTALLED" =~ ${{ env.VERSION }} ]]; then
+            exit 0
+          fi
+          exit 1
+
+  test-with-gen-yaml:
+    runs-on: ubuntu-latest
+    env:
+      GEN_YAML: ".github/test-gen.yaml"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Action
+        uses: ./
+        with:
+          gen-yaml: ${{ env.GEN_YAML }}
+
+      - name: Assert Installation
+        run: type aws-sdk-client-go
+
+      - name: Assert Generated Services
+        run: |
+          GENERATED=$(aws-sdk-client-go)
+          if [[ "$GENERATED" == "s3" ]]; then
+            exit 0
+          fi
+          exit 1
+
+  test-with-client-go-gen:
+    runs-on: ubuntu-latest
+    env:
+      CLIENT_GO_GEN: "s3"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Action
+        uses: ./
+        with:
+          client-go-gen: ${{ env.CLIENT_GO_GEN }}
+
+      - name: Assert Installation
+        run: type aws-sdk-client-go
+
+      - name: Assert Generated Services
+        run: |
+          GENERATED=$(aws-sdk-client-go)
+          if [[ "$GENERATED" == "s3" ]]; then
+            exit 0
+          fi
+          exit 1
+
+  compatibility:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Action
+        uses: ./
+
+      - name: Assert Installation
+        run: type aws-sdk-client-go
+
