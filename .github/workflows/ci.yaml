@@ -16,8 +16,6 @@ permissions: write-all
 
 jobs:
   test-with-version:
-    concurrency:
-      group: test
     runs-on: ubuntu-latest
     env:
       VERSION: "v0.0.14"
@@ -42,8 +40,6 @@ jobs:
           exit 1
 
   test-with-gen-yaml:
-    concurrency:
-      group: test
     runs-on: ubuntu-latest
     env:
       GEN_YAML: ".github/test-gen.yaml"
@@ -68,8 +64,6 @@ jobs:
           exit 1
 
   test-with-client-go-gen:
-    concurrency:
-      group: test
     runs-on: ubuntu-latest
     env:
       CLIENT_GO_GEN: "s3"
@@ -94,8 +88,6 @@ jobs:
           exit 1
 
   compatibility:
-    concurrency:
-      group: test
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
