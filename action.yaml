@@ -60,5 +60,4 @@ runs:
         go generate ./cmd/aws-sdk-client-gen .
         cd ./cmd/aws-sdk-client-go
         go install -installsuffix aws-sdk-client-go
-      shell: bash
 
