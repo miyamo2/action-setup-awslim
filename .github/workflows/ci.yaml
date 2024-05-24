@@ -90,10 +90,10 @@ jobs:
           fi
           exit 1
 
-  test-go-version:
-    runs-on: ubuntu-latest
+  test-macos-with-go-version:
+    runs-on: macos-latest
     env:
-      GO_VERSION: "1.20"
+      GO_VERSION: "1.21.1"
 
     steps:
       - uses: actions/checkout@v4
