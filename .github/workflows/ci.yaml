@@ -148,9 +148,12 @@ jobs:
 
       - name: Assert Installation(Windows with PowerShell)
         if: ${{ runner.os == 'Windows'}}
+        env:
+          find: ${{ steps.check-installation-runs-on-pwsh.outputs.find }}
         run: |
-          if [ ${{ steps.check-installation-runs-on-pwsh.outputs.find }} =~ "False" ]; then
+          if  (${{ env.find }} -like "*False*" )
+          {
             exit 1
-          fi
+          }
           exit 0
 
