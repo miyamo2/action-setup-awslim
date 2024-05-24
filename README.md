@@ -66,13 +66,36 @@ jobs:
         run: awslim
 ```
 
+#### With `gen.yaml` written inline
+
+added in v0.2.0
+
+```yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: miyamo2/action-setup-awslim@v0
+        with:
+          gen-yaml-inline: |
+            services:
+              s3:
+                - GetObject
+                - PutObject
+              sqs:
+          
+      - name: Run awslim
+        run: awslim
+```
+
 ### Inputs
 
-| Name             | Description                                     | Default  |
-|:-----------------|:------------------------------------------------|:---------|
-| `awslim-version` | The version of `awslim` to use.                 | `latest` |
-| `awslim-gen`     | The value of `AWSLIM_GEN` environment variable. | -        |
-| `gen-yaml-path`  | The path to `gen.yaml` file.                    | -        |
+| Name              | Description                                 | Default  |
+|:------------------|:--------------------------------------------|:---------|
+| `awslim-version`  | Version of `awslim` to use.                 | `latest` |
+| `awslim-gen`      | Value of `AWSLIM_GEN` environment variable. | -        |
+| `gen-yaml-path`   | Path to `gen.yaml` file.                    | -        |
+| `gen-yaml-inline` | Can be written gen.yaml with inline.        | -        |
 
 ## Support
 
