@@ -1,5 +1,9 @@
-name: "action-setup-awslim"
+name: "action setup-awslim"
 description: "Setup `fujiwara/awslim`"
+branding:
+  icon: cloud
+  color: orange
+
 inputs:
   awslim-version:
     description: |
