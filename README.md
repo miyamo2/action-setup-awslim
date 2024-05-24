@@ -78,11 +78,11 @@ jobs:
 
 ### Hosted Runner
 
-| OS      | Support | Note                       |
-|:--------|:--------|:---------------------------|
-| Ubuntu  | 〇       | -                          |
-| macOS   | 〇       | -                          |
-| Windows | △       | Does not work with `pwsh`. |
+| OS      | Support | Note |
+|:--------|:--------|:-----|
+| Ubuntu  | 〇       | -    |
+| macOS   | 〇       | -    |
+| Windows | 〇       | -    |
 
 ## Contributing
 
