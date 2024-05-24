@@ -20,11 +20,19 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Check Go Version
+      id: find-go
+      continue-on-error: true
+      run: |
+        FIND=$(type go > /dev/null 2>&1)
+        echo "find=$ FIND" >> $GITHUB_OUTPUT
+      shell: bash
+
     - name: Setup Go
       uses: actions/setup-go@v5
       with:
         go-version: ">=1.21.0"
-      if: ${{ runner.os == 'macOS'}}
+      if: ${{ steps.find-go.outputs.find != 'true'}}
 
     - name: Checkout with version
       uses: actions/checkout@v4
