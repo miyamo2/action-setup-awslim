@@ -29,11 +29,11 @@ jobs:
           version: ${{ env.VERSION }}
 
       - name: Assert Installation
-        run: type aws-sdk-client-go
+        run: type awslim
 
       - name: Assert Version
         run: |
-          INSTALLED=$(aws-sdk-client-go --version)
+          INSTALLED=$(awslim --version)
           if [[ "$INSTALLED" =~ "HEAD" ]]; then
             exit 0
           fi
@@ -53,11 +53,11 @@ jobs:
           gen-yaml: ${{ env.GEN_YAML }}
 
       - name: Assert Installation
-        run: type aws-sdk-client-go
+        run: type awslim
 
       - name: Assert Generated Services
         run: |
-          GENERATED=$(aws-sdk-client-go)
+          GENERATED=$(awslim)
           if [[ "$GENERATED" == "s3" ]]; then
             exit 0
           fi
@@ -77,11 +77,11 @@ jobs:
           client-go-gen: ${{ env.CLIENT_GO_GEN }}
 
       - name: Assert Installation
-        run: type aws-sdk-client-go
+        run: type awslim
 
       - name: Assert Generated Services
         run: |
-          GENERATED=$(aws-sdk-client-go)
+          GENERATED=$(awslim)
           if [[ "$GENERATED" == "s3" ]]; then
             exit 0
           fi
@@ -101,10 +101,10 @@ jobs:
 
       - name: Assert Installation
         if: ${{ matrix.os != 'windows-latest' }}
-        run: type aws-sdk-client-go
+        run: type awslim
 
       - name: Assert Installation
         if: ${{ matrix.os == 'windows-latest' }}
-        run: type aws-sdk-client-go
+        run: type awslim
         shell: bash
 

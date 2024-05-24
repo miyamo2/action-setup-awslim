@@ -1,21 +1,21 @@
-name: "action-setup-aws-sdk-client-go"
-description: "Setup `fujiwara/aws-sdk-client-go`"
+name: "action-setup-awslim"
+description: "Setup `fujiwara/awslim`"
 inputs:
-  version:
+  awslim-version:
     description: |
       aws-sdk-client-gen version specification.
       format: `vX.Y.Z` or `latest`
     required: false
     default: "latest"
-  gen-yaml:
+  gen-yaml-path:
     description: |
       Relative path to gen.yaml from the repository root. 
-      See: https://github.com/fujiwara/aws-sdk-client-go?tab=readme-ov-file#genyaml-configuration-file
+      See: https://github.com/fujiwara/awslim?tab=readme-ov-file#genyaml-configuration-file
     required: false
-  client-go-gen:
+  awslim-gen:
     description: |
-      It is set as the environment variable `AWS_SDK_CLIENT_GO_GEN`. 
-      See: https://github.com/fujiwara/aws-sdk-client-go?tab=readme-ov-file#aws_sdk_client_go_gen-environment-variable
+      It is set as the environment variable `AWSLIM_GEN`. 
+      See: https://github.com/fujiwara/awslim?tab=readme-ov-file#awslim_gen-environment-variable
     required: false
 runs:
   using: "composite"
@@ -28,41 +28,41 @@ runs:
 
     - name: Checkout with version
       uses: actions/checkout@v4
-      if: ${{ inputs.version != 'latest'}}
+      if: ${{ inputs.awslim-version != 'latest'}}
       with:
-        repository: fujiwara/aws-sdk-client-go
-        path: fujiwara/aws-sdk-client-go
-        ref: ${{ inputs.version }}
+        repository: fujiwara/awslim
+        path: fujiwara/awslim
+        ref: ${{ inputs.awslim-version }}
 
     - name: Checkout
       uses: actions/checkout@v4
-      if: ${{ inputs.version == 'latest'}}
+      if: ${{ inputs.awslim-version == 'latest'}}
       with:
-        repository: fujiwara/aws-sdk-client-go
-        path: fujiwara/aws-sdk-client-go
+        repository: fujiwara/awslim
+        path: fujiwara/awslim
         fetch-depth: 0
 
     - name: Checkout latest version
-      if: ${{ inputs.version == 'latest'}}
+      if: ${{ inputs.awslim-version == 'latest'}}
       run: |
         TAG=$(git describe --tags --abbrev=0)
         git checkout $TAG
       shell: bash
-      working-directory: fujiwara/aws-sdk-client-go
+      working-directory: fujiwara/awslim
 
     - name: Copy gen.yml
-      run: cp ${{ inputs.gen-yaml }} ${{ github.workspace }}/fujiwara/aws-sdk-client-go/gen.yaml -f
+      run: cp ${{ inputs.gen-yaml-path }} ${{ github.workspace }}/fujiwara/awslim/gen.yaml -f
       shell: bash
-      if: ${{ inputs.gen-yaml }}
+      if: ${{ inputs.gen-yaml-path }}
 
     - name: Build and Intall
-      working-directory: fujiwara/aws-sdk-client-go
+      working-directory: fujiwara/awslim
       env:
-        AWS_SDK_CLIENT_GO_GEN: ${{ inputs.client-go-gen }}
+        AWSLIM_GEN: ${{ inputs.awslim-gen }}
       run: |
-        go generate ./cmd/aws-sdk-client-gen .
-        cd ./cmd/aws-sdk-client-go
-        go install -installsuffix aws-sdk-client-go
+        go generate ./cmd/awslim-gen .
+        cd ./cmd/awslim
+        go install -installsuffix awslim
         echo "$(go env GOPATH)/bin" >>"${GITHUB_PATH}"
       shell: bash
 
