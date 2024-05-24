@@ -90,8 +90,8 @@ jobs:
           fi
           exit 1
 
-  test-macos-with-go-version:
-    runs-on: macos-latest
+  test-go-version:
+    runs-on: ubuntu-latest
     env:
       GO_VERSION: "1.21.1"
 
