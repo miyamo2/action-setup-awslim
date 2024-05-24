@@ -57,7 +57,7 @@ jobs:
 
       - name: Assert Generated Services
         run: |
-          GENERATED=$(awslim)
+          GENERATED=$(awslim | tr -d '\n')
           if [[ "$GENERATED" == "s3" ]]; then
             exit 0
           fi
@@ -81,7 +81,7 @@ jobs:
 
       - name: Assert Generated Services
         run: |
-          GENERATED=$(awslim)
+          GENERATED=$(awslim | tr -d '\n')
           if [[ "$GENERATED" == "s3" ]]; then
             exit 0
           fi
