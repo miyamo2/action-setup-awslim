@@ -25,7 +25,7 @@ runs:
       continue-on-error: true
       run: |
         FIND=$(type go > /dev/null 2>&1)
-        echo "find=$ FIND" >> $GITHUB_OUTPUT
+        echo "find=$FIND" >> $GITHUB_OUTPUT
       shell: bash
 
     - name: Setup Go
