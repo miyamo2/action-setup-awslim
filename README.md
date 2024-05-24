@@ -1,6 +1,6 @@
 # action-setup-awslim
 
-Setup [`fujiwara/awslim`](https://github.com/fujiwara/awslim)
+This action sets up a [`fujiwara/awslim`](https://github.com/fujiwara/awslim)
 
 ## Getting Started
 
