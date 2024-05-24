@@ -18,6 +18,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Extract Version
         id: versioning
@@ -30,7 +32,7 @@ jobs:
       - name: Extract changes from prev version
         run: |
           git fetch --prune --unshallow
-          PRETAG=$(git describe --tags --abbrev=0)
+          PRETAG=$(git tag --sort -v:refname | head -1)
           CURRENTTAG=${{ steps.versioning.outputs.version }}
           echo "## What's Changed in ${CURRENTTAG}" > diff-changelog.txt
           if [ -z "$PRETAG" ]
