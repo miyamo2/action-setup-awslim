@@ -7,9 +7,15 @@ on:
       - "refactor/**"
       - "fix/**"
       - "main"
+    paths:
+      - "action.yaml"
+      - ".github/**"
   pull_request:
     branches:
       - "main"
+    paths:
+      - "action.yaml"
+      - ".github/**"
   workflow_call:
 
 permissions: write-all
