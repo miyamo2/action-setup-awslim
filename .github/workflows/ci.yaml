@@ -98,8 +98,6 @@ jobs:
 
   test-gen-yaml-inline:
     runs-on: ubuntu-latest
-    env:
-      GEN_YAML: ".github/test-gen.yaml"
 
     steps:
       - uses: actions/checkout@v4
