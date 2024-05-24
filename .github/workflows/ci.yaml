@@ -107,10 +107,10 @@ jobs:
         with:
           gen-yaml-inline: |
             services:
-              - s3:
+              s3:
                 - GetObject
                 - PutObject
-              - sqs:
+              sqs:
 
       - name: Assert Installation
         run: type awslim
