@@ -21,6 +21,11 @@ inputs:
       It is set as the environment variable `AWSLIM_GEN`. 
       See: https://github.com/fujiwara/awslim?tab=readme-ov-file#awslim_gen-environment-variable
     required: false
+  gen-yaml-inline:
+    description: |
+      Can be written gen.yaml with inline. 
+      See: https://github.com/fujiwara/awslim?tab=readme-ov-file#genyaml-configuration-file
+    required: false
 runs:
   using: "composite"
   steps:
@@ -66,6 +71,11 @@ runs:
       run: cp ${{ inputs.gen-yaml-path }} ${{ github.workspace }}/fujiwara/awslim/gen.yaml -f
       shell: bash
       if: ${{ inputs.gen-yaml-path }}
+
+    - name: Write gen.yml
+      run: cat ${{ inputs.gen-yaml-inline }} > ${{ github.workspace }}/fujiwara/awslim/gen.yaml
+      shell: bash
+      if: ${{ inputs.gen-yaml-inline }}
 
     - name: Build and Intall
       working-directory: fujiwara/awslim
