@@ -96,6 +96,47 @@ jobs:
           fi
           exit 1
 
+  test-gen-yaml-inline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Action
+        uses: ./
+        with:
+          gen-yaml-inline: |
+            services:
+              s3:
+                - GetObject
+                - PutObject
+              sqs:
+
+      - name: Assert Installation
+        run: type awslim
+
+      - name: Assert Generated Services
+        run: |
+          GENERATED=$(awslim)
+          echo $GENERATED
+          if [[ ! "$GENERATED" =~ "s3" ]]; then
+            exit 1
+          fi
+          if [[ ! "$GENERATED" =~ "sqs" ]]; then
+            exit 1
+          fi
+
+      - name: Assert Generated Method
+        run: |
+          GENERATED=$(awslim s3)
+          echo $GENERATED
+          if [[ ! "$GENERATED" =~ "GetObject" ]]; then
+            exit 1
+          fi
+          if [[ ! "$GENERATED" =~ "PutObject" ]]; then
+            exit 1
+          fi
+
   test-go-version:
     runs-on: ubuntu-latest
     env:
