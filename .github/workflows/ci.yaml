@@ -130,10 +130,27 @@ jobs:
         uses: ./
 
       - name: Assert Installation
+        if: ${{ runner.os != 'Windows'}}
         run: type awslim
 
       - name: Assert Installation(Windows with Bash)
         if: ${{ runner.os == 'Windows'}}
         run: type awslim
         shell: bash
+
+      - name: Check Installation(Windows with PowerShell)
+        id: check-installation-runs-on-pwsh
+        continue-on-error: true
+        if: ${{ runner.os == 'Windows'}}
+        run: |
+          awslim
+          echo "find=$?" >> $GITHUB_OUTPUT
+
+      - name: Assert Installation(Windows with PowerShell)
+        if: ${{ runner.os == 'Windows'}}
+        run: |
+          if [ ${{ steps.check-installation-runs-on-pwsh.outputs.find }} =~ "False" ]; then
+            exit 1
+          fi
+          exit 0
 
