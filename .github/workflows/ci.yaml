@@ -18,7 +18,7 @@ jobs:
   test-with-version:
     runs-on: ubuntu-latest
     env:
-      VERSION: "v0.0.14"
+      VERSION: "v0.1.0"
 
     steps:
       - uses: actions/checkout@v4
