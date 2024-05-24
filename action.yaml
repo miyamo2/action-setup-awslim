@@ -71,6 +71,14 @@ runs:
         go generate ./cmd/awslim-gen .
         cd ./cmd/awslim
         go install -installsuffix awslim
-        echo "$(go env GOPATH)/bin" >>"${GITHUB_PATH}"
       shell: bash
 
+    - name: Export Path
+      if: ${{ runner.os != 'Windows'}}
+      run: echo "$(go env GOPATH)/bin" >>"${GITHUB_PATH}"
+      shell: bash
+
+    - name: Export Path(PowerShell)
+      if: ${{ runner.os == 'Windows'}}
+      run: echo "$(go env GOPATH)\bin" >>"${GITHUB_PATH}"
+      shell: pwsh

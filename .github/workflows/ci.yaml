@@ -132,3 +132,8 @@ jobs:
       - name: Assert Installation
         run: type awslim
 
+      - name: Assert Installation(Windows with Bash)
+        if: ${{ runner.os == 'Windows'}}
+        run: type awslim
+        shell: bash
+
