@@ -73,7 +73,7 @@ runs:
       if: ${{ inputs.gen-yaml-path }}
 
     - name: Write gen.yml
-      run: cat ${{ inputs.gen-yaml-inline }} > ${{ github.workspace }}/fujiwara/awslim/gen.yaml
+      run: echo ${{ inputs.gen-yaml-inline }} > ${{ github.workspace }}/fujiwara/awslim/gen.yaml
       shell: bash
       if: ${{ inputs.gen-yaml-inline }}
 
