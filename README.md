@@ -1,6 +1,10 @@
 # action-setup-awslim
 
-This action sets up a [`fujiwara/awslim`](https://github.com/fujiwara/awslim)
+This action sets up a [`fujiwara/awslim`](https://github.com/fujiwara/awslim).
+
+[![release](https://github.com/miyamo2/action-setup-awslim/actions/workflows/release.yaml/badge.svg?branch=main)](https://github.com/miyamo2/action-setup-awslim/actions/workflows/release.yaml)
+![GitHub Release](https://img.shields.io/github/v/release/miyamo2/action-setup-awslim?label=version)
+![GitHub License](https://img.shields.io/github/license/miyamo2/action-setup-awslim)
 
 ## Getting Started
 
