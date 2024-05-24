@@ -31,7 +31,6 @@ jobs:
 
       - name: Extract changes from prev version
         run: |
-          git fetch --prune --unshallow
           PRETAG=$(git tag --sort -v:refname | head -1)
           CURRENTTAG=${{ steps.versioning.outputs.version }}
           echo "## What's Changed in ${CURRENTTAG}" > diff-changelog.txt
