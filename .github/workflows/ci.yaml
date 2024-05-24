@@ -147,13 +147,6 @@ jobs:
           echo "find=$?" >> $GITHUB_OUTPUT
 
       - name: Assert Installation(Windows with PowerShell)
-        if: ${{ runner.os == 'Windows'}}
-        env:
-          find: ${{ steps.check-installation-runs-on-pwsh.outputs.find }}
-        run: |
-          if  (${{ env.find }} -like "*False*" )
-          {
-            exit 1
-          }
-          exit 0
+        if: ${{ runner.os == 'Windows' && steps.check-installation-runs-on-pwsh.outputs.find == 'False' }}
+        run: exit 1
 
