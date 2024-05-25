@@ -80,7 +80,7 @@ runs:
       if: ${{ inputs.gen-yaml-inline }}
 
     - name: Restore cache
-      id: restore-cache
+      id: restore-awslim-cache
       uses: actions/cache/restore@v4
       with:
         path: |
@@ -89,7 +89,7 @@ runs:
 
     - name: Build
       working-directory: fujiwara/awslim
-      if: restore-cache.outputs.cache-hit != 'true'
+      if: ${{ restore-awslim-cache.outputs.cache-hit != 'true' }}
       env:
         AWSLIM_GEN: ${{ inputs.awslim-gen }}
       run: |
@@ -97,9 +97,9 @@ runs:
       shell: bash
 
     - name: Save cache
-      id: save-cache
+      id: save-awslim-cache
       uses: actions/cache/save@v4
-      if: restore-cache.outputs.cache-hit != 'true'
+      if: ${{ restore-awslim-cache.outputs.cache-hit != 'true' }}
       with:
         path: |
           ${{ github.workspace }}/fujiwara/awslim
