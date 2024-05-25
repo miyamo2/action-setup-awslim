@@ -33,15 +33,15 @@ runs:
       id: find-go
       continue-on-error: true
       run: |
-        FIND=$(type go > /dev/null 2>&1 && echo "true")
-        echo "find=$FIND" >> $GITHUB_OUTPUT
+        FOUND=$(type go > /dev/null 2>&1 && echo "true")
+        echo ::set-output name=found::$FOUND
       shell: bash
 
     - name: Setup Go
       uses: actions/setup-go@v5
       with:
         go-version: ">=1.21.0"
-      if: ${{ steps.find-go.outputs.find != 'true'}}
+      if: ${{ steps.find-go.outputs.found != 'true'}}
 
     - name: Checkout with version
       uses: actions/checkout@v4
