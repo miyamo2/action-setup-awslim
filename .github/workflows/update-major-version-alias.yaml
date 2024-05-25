@@ -1,0 +1,24 @@
+name: update major version alias
+
+on:
+  repository_dispatch:
+    types:
+      - triggered_by_release
+
+jobs:
+  major-version-alias:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create Major Version Alias
+        run: |
+          LATEST_TAG=$(git tag --sort -v:refname | head -1)
+          MAJOR_VERSION=$(echo $LATEST_TAG | cut -d. -f1)
+          git tag -d $MAJOR_VERSION
+          git push -d origin $MAJOR_VERSION
+          git tag $MAJOR_VERSION
+          git push origin $MAJOR_VERSION
