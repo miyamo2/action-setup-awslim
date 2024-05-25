@@ -60,10 +60,12 @@ runs:
         fetch-depth: 0
 
     - name: Checkout latest version
+      id: checkout-latest
       if: ${{ inputs.awslim-version == 'latest'}}
       run: |
         TAG=$(git describe --tags --abbrev=0)
         git checkout $TAG
+        echo ::set-output name=latest::$TAG
       shell: bash
       working-directory: fujiwara/awslim
 
@@ -77,14 +79,35 @@ runs:
       shell: bash
       if: ${{ inputs.gen-yaml-inline }}
 
-    - name: Build and Intall
+    - name: Restore cache
+      id: restore-cache
+      uses: actions/cache/restore@v4
+      with:
+        path: |
+          ${{ github.workspace }}/fujiwara/awslim
+        key: ${{ runner.os }}-${{ steps.checkout-latest.outputs.latest || inputs.awslim-version }}-${{ hashFiles(format('{0}/fujiwara/awslim/gen.yaml', github.workspace)) }}-${{ inputs.awslim-gen }}
+
+    - name: Build
       working-directory: fujiwara/awslim
+      if: restore-cache.outputs.cache-hit != 'true'
       env:
         AWSLIM_GEN: ${{ inputs.awslim-gen }}
       run: |
         go generate ./cmd/awslim-gen .
-        cd ./cmd/awslim
-        go install -installsuffix awslim
+      shell: bash
+
+    - name: Save cache
+      id: save-cache
+      uses: actions/cache/save@v4
+      if: restore-cache.outputs.cache-hit != 'true'
+      with:
+        path: |
+          ${{ github.workspace }}/fujiwara/awslim
+        key: ${{ runner.os }}-${{ steps.checkout-latest.outputs.latest || inputs.awslim-version }}-${{ hashFiles(format('{0}/fujiwara/awslim/gen.yaml', github.workspace)) }}-${{ inputs.awslim-gen }}
+
+    - name: Install
+      working-directory: fujiwara/awslim/cmd/awslim
+      run: go install -installsuffix awslim
       shell: bash
 
     - name: Export Path
