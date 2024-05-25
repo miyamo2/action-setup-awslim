@@ -26,6 +26,11 @@ inputs:
       Can be written gen.yaml with inline. 
       See: https://github.com/fujiwara/awslim?tab=readme-ov-file#genyaml-configuration-file
     required: false
+  disable-cache:
+    description: |
+      Disable cache for `fujiwara/awslim` binary.
+    required: false
+    default: "false"
 runs:
   using: "composite"
   steps:
@@ -81,6 +86,7 @@ runs:
 
     - name: Restore cache
       id: restore-awslim-cache
+      if: ${{ inputs.disable-cache != 'true' }}
       uses: actions/cache/restore@v4
       with:
         path: |
@@ -105,7 +111,7 @@ runs:
       shell: bash
 
     - name: Save cache
-      if: ${{ steps.restore-awslim-cache.outputs.cache-hit != 'true' }}
+      if: ${{ steps.restore-awslim-cache.outputs.cache-hit != 'true' && inputs.disable-cache != 'true' }}
       id: save-awslim-cache
       uses: actions/cache/save@v4
       with:
