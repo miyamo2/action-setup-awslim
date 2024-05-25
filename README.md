@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: miyamo2/action-setup-awslim@v0
         with:
-          awslim-version: v0.0.1
+          awslim-version: v0.1.0
           
       - name: Run awslim
         run: awslim
