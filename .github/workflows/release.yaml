@@ -47,3 +47,8 @@ jobs:
           tag_name: ${{ steps.versioning.outputs.version }}
           generate_release_notes: false
           body_path: diff-changelog.txt
+
+      - name: Update Major Version Alias
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          event-type: triggered_by_release
