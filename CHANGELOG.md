@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1 - 2024-05-25
+
+### ⚡️ Performance
+
+Changed cache target from generated `.go` to execution file.
+
 ## 0.3.0 - 2024-05-25
 
 ### ✨ New Features
