@@ -84,7 +84,7 @@ runs:
       uses: actions/cache/restore@v4
       with:
         path: |
-          ${{ github.workspace }}/fujiwara/awslim
+          ${{ github.workspace }}/fujiwara/awslim/bin
         key: ${{ runner.os }}-${{ steps.checkout-latest.outputs.latest || inputs.awslim-version }}-${{ hashFiles(format('{0}/fujiwara/awslim/gen.yaml', github.workspace)) }}-${{ inputs.awslim-gen }}
 
     - name: Build
@@ -96,25 +96,32 @@ runs:
         go generate ./cmd/awslim-gen .
       shell: bash
 
-    - name: Save cache
-      id: save-awslim-cache
-      uses: actions/cache/save@v4
-      if: ${{ steps.restore-awslim-cache.outputs.cache-hit != 'true' }}
-      with:
-        path: |
-          ${{ github.workspace }}/fujiwara/awslim
-        key: ${{ runner.os }}-${{ steps.checkout-latest.outputs.latest || inputs.awslim-version }}-${{ hashFiles(format('{0}/fujiwara/awslim/gen.yaml', github.workspace)) }}-${{ inputs.awslim-gen }}
-
     - name: Install
+      if: ${{ steps.restore-awslim-cache.outputs.cache-hit != 'true' }}
+      env:
+        GOBIN:  ${{ github.workspace }}/fujiwara/awslim/bin
       working-directory: fujiwara/awslim/cmd/awslim
       run: go install -installsuffix awslim
       shell: bash
 
+    - name: Save cache
+      if: ${{ steps.restore-awslim-cache.outputs.cache-hit != 'true' }}
+      id: save-awslim-cache
+      uses: actions/cache/save@v4
+      with:
+        path: |
+          ${{ github.workspace }}/fujiwara/awslim/bin
+        key: ${{ runner.os }}-${{ steps.checkout-latest.outputs.latest || inputs.awslim-version }}-${{ hashFiles(format('{0}/fujiwara/awslim/gen.yaml', github.workspace)) }}-${{ inputs.awslim-gen }}
+
     - name: Export Path
-      run: echo "$(go env GOPATH)/bin" >>"${GITHUB_PATH}"
+      env:
+        AWSLIM_PATH: ${{ github.workspace }}/fujiwara/awslim/bin
+      run: echo "${{env.AWSLIM_PATH}}" >>"${GITHUB_PATH}"
       shell: bash
 
     - name: Export Path(PowerShell)
+      env:
+        AWSLIM_PATH: ${{ github.workspace }}\fujiwara\awslim\bin
       if: ${{ runner.os == 'Windows'}}
-      run: echo "$(go env GOPATH)\bin" >>"${GITHUB_PATH}"
+      run: echo "${{env.AWSLIM_PATH}}" >>"${GITHUB_PATH}"
       shell: pwsh
