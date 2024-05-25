@@ -32,6 +32,7 @@ jobs:
       - name: Run Action
         uses: ./
         with:
+          disable-cache: true
           awslim-version: ${{ env.VERSION }}
 
       - name: Assert Installation
@@ -57,6 +58,7 @@ jobs:
       - name: Run Action
         uses: ./
         with:
+          disable-cache: true
           gen-yaml-path: ${{ env.GEN_YAML }}
 
       - name: Assert Installation
@@ -82,6 +84,7 @@ jobs:
       - name: Run Action
         uses: ./
         with:
+          disable-cache: true
           awslim-gen: ${{ env.CLIENT_GO_GEN }}
 
       - name: Assert Installation
@@ -105,6 +108,7 @@ jobs:
       - name: Run Action
         uses: ./
         with:
+          disable-cache: true
           gen-yaml-inline: |
             services:
               s3:
@@ -164,6 +168,20 @@ jobs:
           fi
           exit 1
 
+  test-with-cache:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Action
+        uses: ./
+        with:
+          version: "v0.1.0"
+
+      - name: Assert Installation
+        run: type awslim
+
   compatibility:
     strategy:
       matrix:
@@ -175,6 +193,8 @@ jobs:
 
       - name: Run Action
         uses: ./
+        with:
+          disable-cache: true
 
       - name: Assert Installation
         if: ${{ runner.os != 'Windows'}}
