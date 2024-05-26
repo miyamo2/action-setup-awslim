@@ -90,12 +90,13 @@ jobs:
 
 ### Inputs
 
-| Name              | Description                                 | Default  |
-|:------------------|:--------------------------------------------|:---------|
-| `awslim-version`  | Version of `awslim` to use.                 | `latest` |
-| `awslim-gen`      | Value of `AWSLIM_GEN` environment variable. | -        |
-| `gen-yaml-path`   | Path to `gen.yaml` file.                    | -        |
-| `gen-yaml-inline` | Can be written gen.yaml with inline.        | -        |
+| Name              | Description                                       | Default  | Note                            |
+|:------------------|:--------------------------------------------------|:---------|:--------------------------------|
+| `awslim-version`  | Version of `awslim` to use.                       | `latest` | -                               |
+| `awslim-gen`      | Value of `AWSLIM_GEN` environment variable.       | -        | -                               |
+| `gen-yaml-path`   | Path to `gen.yaml` file.                          | -        | -                               |
+| `gen-yaml-inline` | Can be written gen.yaml with inline.              | -        | -                               |
+| `disable-cache`   | Disable the cache of the `awslim` execution file. | 'false'  | Deprecated. Mainly for testing. |
 
 ## Support
 

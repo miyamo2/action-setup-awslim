@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 - 2024-05-26
+
+### ✨ New Features
+
+- Added `disable-cache`, the option to disable cache of the awslim execution file.
+
 ## 0.3.1 - 2024-05-25
 
 ### ⚡️ Performance
