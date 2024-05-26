@@ -14,6 +14,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Git Config
+        run: |
+          git remote set-url origin https://github-actions:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}
+          git config --global user.name "${GITHUB_REPOSITORY_OWNER}"
+          git config --global user.email "${GITHUB_REPOSITORY_OWNER}@users.noreply.github.com"
+
       - name: Create Major Version Alias
         run: |
           LATEST_TAG=$(git tag --sort -v:refname | head -1)
