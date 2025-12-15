@@ -87,7 +87,7 @@ runs:
     - name: Restore cache
       id: restore-awslim-cache
       if: ${{ inputs.disable-cache != 'true' }}
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@v5
       with:
         path: |
           ${{ github.workspace }}/fujiwara/awslim/bin
@@ -113,7 +113,7 @@ runs:
     - name: Save cache
       if: ${{ steps.restore-awslim-cache.outputs.cache-hit != 'true' && inputs.disable-cache != 'true' }}
       id: save-awslim-cache
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@v5
       with:
         path: |
           ${{ github.workspace }}/fujiwara/awslim/bin
